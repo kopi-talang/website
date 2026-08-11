@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kopi Talang — Katalog Produk UMKM Tanggamus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#150c07;
+    --bg-1:#1f130b;
+    --bg-2:#2a1a10;
+    --line:#3a2818;
+    --cream:#f4ead9;
+    --cream-dim:#c9b8a2;
+    --muted:#8f7c68;
+    --gold:#d9a75c;
+    --gold-bright:#eec98a;
+    --whatsapp:#0ad357;
+    --instagram:#d62976;
+    --tiktok:#0c0c0c;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--cream);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--gold);
+    display:block;
+  }
+  h1,h2,h3,h4{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    color:var(--cream);
+    line-height:1.15;
+  }
+  .italic-gold{
+    font-style:italic;
+    font-weight:500;
+    color:var(--gold-bright);
+  }
+
+  /* ===== NAV ===== */
+  .nav{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 20px;
+    background:rgba(21,12,7,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{
+    width:38px;height:38px;border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);
+    flex-shrink:0;
+  }
+  .brand-text{line-height:1.2;}
+  .brand-name{font-family:'Playfair Display',serif;font-weight:600;font-size:1.05rem;color:var(--cream);}
+  .brand-sub{font-family:'JetBrains Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:var(--muted);}
+  .nav-links{display:none;gap:32px;font-size:0.92rem;color:var(--cream-dim);}
+  .nav-links a:hover{color:var(--gold-bright);}
+  .nav-cta{
+    background:var(--gold);
+    color:#1f130b;
+    padding:9px 18px;
+    border-radius:8px;
+    font-size:0.85rem;
+    font-weight:500;
+    white-space:nowrap;
+    transition:background .2s ease;
+  }
+  .nav-cta:hover{background:var(--gold-bright);}
+
+  /* ===== CART ICON (NAV) ===== */
+  .nav-right{display:flex;align-items:center;gap:12px;}
+  .cart-icon-btn{
+    position:relative;
+    width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);
+    background:var(--bg-1);
+    font-size:1.05rem;
+    transition:border-color .2s ease, transform .2s ease;
+    flex-shrink:0;
+  }
+  .cart-icon-btn:hover{border-color:var(--gold);transform:translateY(-1px);}
+  .cart-count{
+    position:absolute;top:-6px;right:-6px;
+    min-width:19px;height:19px;padding:0 4px;
+    border-radius:999px;
+    background:var(--gold);color:#241608;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.68rem;font-weight:500;
+    display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--bg-0);
+  }
+  .cart-count.zero{display:none;}
+
+  /* ===== CART DRAWER ===== */
+  .cart-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(10,6,3,0.6);
+    backdrop-filter:blur(2px);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .cart-overlay.open{opacity:1;pointer-events:auto;}
+  .cart-drawer{
+    position:fixed;top:0;right:0;bottom:0;z-index:201;
+    width:min(420px,92vw);
+    background:var(--bg-1);
+    border-left:1px solid var(--line);
+    display:flex;flex-direction:column;
+    transform:translateX(100%);
+    transition:transform .35s ease;
+  }
+  .cart-drawer.open{transform:translateX(0);}
+  .cart-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 22px;border-bottom:1px solid var(--line);
+  }
+  .cart-head h3{font-size:1.25rem;}
+  .cart-close{
+    width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;color:var(--cream-dim);
+    transition:border-color .2s ease,color .2s ease;
+  }
+  .cart-close:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .cart-items{flex:1;overflow-y:auto;padding:14px 22px;}
+  .cart-empty{
+    text-align:center;color:var(--muted);padding:60px 10px;font-size:0.92rem;
+  }
+  .cart-item{
+    display:flex;gap:12px;
+    padding:16px 0;border-bottom:1px solid var(--line);
+  }
+  .cart-item-thumb{
+    width:58px;height:58px;border-radius:8px;overflow:hidden;flex-shrink:0;
+    background:var(--bg-2);
+  }
+  .cart-item-thumb img{width:100%;height:100%;object-fit:cover;}
+  .cart-item-info{flex:1;min-width:0;}
+  .cart-item-name{font-weight:500;font-size:0.94rem;color:var(--cream);}
+  .cart-item-meta{
+    font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+    color:var(--muted);margin-top:3px;
+  }
+  .cart-item-bottom{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:10px;
+  }
+  .cart-qty{display:flex;align-items:center;gap:8px;}
+  .cart-qty button{
+    width:24px;height:24px;border-radius:6px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--cream-dim);font-size:0.9rem;
+    transition:border-color .2s ease;
+  }
+  .cart-qty button:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .cart-qty span{font-family:'JetBrains Mono',monospace;font-size:0.85rem;min-width:16px;text-align:center;}
+  .cart-item-price{font-family:'Playfair Display',serif;font-weight:600;color:var(--gold-bright);font-size:0.95rem;}
+  .cart-item-remove{
+    color:var(--muted);font-size:0.75rem;margin-top:8px;
+    text-decoration:underline;display:inline-block;
+  }
+  .cart-item-remove:hover{color:var(--gold-bright);}
+  .cart-footer{
+    padding:20px 22px 24px;border-top:1px solid var(--line);
+  }
+  .cart-total-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:16px;
+  }
+  .cart-total-label{font-size:0.9rem;color:var(--cream-dim);}
+  .cart-total-value{font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:var(--gold-bright);}
+  .cart-checkout-btn{
+    width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--whatsapp);color:#fff;
+    padding:15px;border-radius:9px;font-size:0.95rem;font-weight:500;
+    transition:filter .2s ease;
+  }
+  .cart-checkout-btn:hover{filter:brightness(1.1);}
+  .cart-checkout-btn:disabled{opacity:0.5;pointer-events:none;}
+
+  @media(min-width:900px){
+    .nav{padding:16px 48px;}
+    .nav-links{display:flex;}
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    padding:120px 24px 80px;
+    isolation:isolate;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-2;
+    background-image:
+      linear-gradient(180deg, rgba(10,6,3,0.55) 0%, rgba(10,6,3,0.75) 55%, var(--bg-0) 100%),
+      url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1600&auto=format&fit=crop');
+    background-size:cover;background-position:center;
+    filter:saturate(0.9);
+  }
+  .hero-eyebrow{margin-bottom:22px;}
+  .hero h1{
+    font-size:clamp(2.4rem, 8vw, 4.6rem);
+    max-width:16ch;
+    margin:0 auto 26px;
+  }
+  .hero p{
+    max-width:520px;margin:0 auto 38px;
+    color:var(--cream-dim);
+    font-size:1rem;
+  }
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg, var(--gold-bright), var(--gold));
+    color:#211407;
+    padding:16px 30px;
+    border-radius:10px;
+    font-weight:500;font-size:0.98rem;
+    box-shadow:0 8px 24px -6px rgba(217,167,92,0.45);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px -6px rgba(217,167,92,0.6);}
+  .scroll-hint{
+    margin-top:64px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.68rem;letter-spacing:0.3em;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    animation:bob 2.2s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+  /* ===== STATS ===== */
+  .stats{
+    display:grid;grid-template-columns:1fr 1fr;
+    background:linear-gradient(180deg, #2a1810, #1a0f08);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .stat{
+    text-align:center;padding:38px 12px;
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .stat:nth-child(2n){border-right:none;}
+  .stat:nth-last-child(-n+2){border-bottom:none;}
+  .stat-num{
+    font-family:'Playfair Display',serif;font-weight:700;
+    font-size:clamp(1.8rem,4vw,2.4rem);color:var(--gold);
+  }
+  .stat-label{font-size:0.85rem;color:var(--cream-dim);margin-top:4px;}
+  @media(min-width:800px){
+    .stats{grid-template-columns:repeat(4,1fr);}
+    .stat{border-bottom:none;}
+    .stat:last-child{border-right:none;}
+  }
+
+  /* ===== CATALOG ===== */
+  .catalog{padding:90px 20px 40px;max-width:1180px;margin:0 auto;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 40px;}
+  .section-head h2{font-size:clamp(2rem,5vw,2.8rem);margin:10px 0 18px;}
+  .section-head p{color:var(--cream-dim);font-size:0.98rem;}
+
+  .filters{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:48px;
+  }
+  .filter-btn{
+    padding:11px 22px;border-radius:999px;
+    border:1px solid var(--line);
+    font-size:0.88rem;color:var(--cream-dim);
+    background:var(--bg-1);
+    transition:all .2s ease;
+  }
+  .filter-btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .filter-btn.active{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#211407;border-color:transparent;font-weight:500;
+  }
+
+  .product-grid{
+    display:grid;grid-template-columns:1fr;gap:32px;
+  }
+  @media(min-width:760px){
+    .product-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  .product-card{
+    background:var(--bg-1);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    transition:transform .35s ease, box-shadow .35s ease, opacity .3s ease;
+    display:flex;flex-direction:column;
+  }
+  .product-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 40px -16px rgba(0,0,0,0.6);
+    border-color:#4a3520;
+  }
+  .product-card.hidden{display:none;}
+  .card-media{position:relative;aspect-ratio:4/3;overflow:hidden;}
+  .card-media img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .product-card:hover .card-media img{transform:scale(1.06);}
+  .badge{
+    position:absolute;top:16px;left:16px;
+    background:var(--gold);color:#241608;
+    font-size:0.72rem;font-weight:500;
+    padding:6px 14px;border-radius:999px;
+    font-family:'JetBrains Mono',monospace;letter-spacing:0.03em;
+  }
+  .location{
+    position:absolute;bottom:14px;left:16px;
+    display:flex;align-items:center;gap:6px;
+    font-size:0.82rem;color:#f2e8d8;
+    text-shadow:0 2px 6px rgba(0,0,0,0.7);
+  }
+  .card-body{padding:26px 26px 24px;flex:1;display:flex;flex-direction:column;}
+  .card-cat{
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;
+    letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;
+  }
+  .card-body h3{font-size:1.4rem;margin:8px 0 10px;}
+  .card-desc{
+    color:var(--cream-dim);font-size:0.92rem;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    margin-bottom:18px;
+  }
+  .specs{
+    display:grid;grid-template-columns:repeat(2,1fr);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:16px 0;margin-bottom:18px;
+  }
+  .spec{text-align:center;}
+  .spec-label{font-size:0.72rem;color:var(--muted);}
+  .spec-value{font-size:0.9rem;color:var(--cream);margin-top:3px;font-weight:500;}
+  .variants{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin-bottom:16px;}
+  .variant-label{font-size:0.72rem;color:var(--muted);letter-spacing:0.05em;margin-bottom:10px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+  .variant-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .variant-btn{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:9px 4px;border-radius:8px;
+    border:1px solid var(--line);background:var(--bg-2);
+    font-size:0.82rem;color:var(--cream-dim);font-weight:500;
+    transition:all .2s ease;
+  }
+  .variant-btn span{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--muted);font-weight:400;}
+  .variant-btn:hover{border-color:var(--gold);color:var(--gold-bright);}
+  .variant-btn.active{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#211407;border-color:transparent;
+  }
+  .variant-btn.active span{color:#3a2410;}
+  .price-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+  .price-tag{font-family:'Playfair Display',serif;font-weight:700;color:var(--gold-bright);font-size:1.3rem;}
+  .price-tag small{font-family:'Jost',sans-serif;font-weight:300;color:var(--cream-dim);font-size:0.78rem;margin-left:2px;}
+  .meta-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .rating{color:var(--gold);font-size:0.9rem;}
+  .rating span{color:var(--cream-dim);margin-left:4px;}
+  .sold{font-size:0.82rem;color:var(--muted);}
+  .card-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+  .shop-btn{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 10px;border-radius:9px;font-size:0.88rem;font-weight:500;
+    transition:filter .2s ease, transform .2s ease;
+    min-width:120px;
+  }
+  .shop-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+  .shop-WhatsApp{background:var(--whatsapp);color:#fff;}
+  .shop-instagram{background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7);color:#fff;}
+  .shop-tiktok{background:var(--tiktok);color:#fff;border:1px solid #333;}
+  .add-cart-btn{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#211407;flex-basis:100%;order:-1;
+  }
+  .add-cart-btn.added{background:var(--whatsapp);color:#fff;}
+
+  /* roast variant reuses variant-options grid but with 2 columns */
+  .roast-options{grid-template-columns:repeat(2,1fr);}
+
+  /* ===== CTA STRIP ===== */
+  .cta-strip{
+    margin:100px auto 0;max-width:1180px;padding:0 20px;
+  }
+  .cta-inner{
+    background:radial-gradient(120% 140% at 50% 0%, #3a2413 0%, #1c1108 70%);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:60px 24px;text-align:center;
+  }
+  .cta-inner h2{font-size:clamp(2rem,6vw,2.8rem);margin:10px 0 18px;}
+  .cta-inner p{color:var(--cream-dim);max-width:480px;margin:0 auto 34px;}
+  .cta-buttons{display:flex;flex-direction:column;gap:14px;max-width:360px;margin:0 auto;}
+  .cta-buttons .shop-btn{padding:16px;font-size:0.95rem;}
+  @media(min-width:600px){.cta-buttons{flex-direction:row;max-width:520px;}}
+
+  /* ===== ABOUT ===== */
+  .about{
+    max-width:1180px;margin:110px auto 0;padding:0 20px;
+    display:grid;grid-template-columns:1fr;gap:40px;
+  }
+  .about h2{font-size:clamp(2rem,6vw,2.9rem);margin:12px 0 22px;}
+  .about p{color:var(--cream-dim);margin-bottom:18px;max-width:52ch;}
+  .ig-tag{display:flex;align-items:center;gap:12px;margin-top:6px;}
+  .ig-icon{
+    width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;color:var(--gold);
+  }
+  .ig-handle{font-weight:500;color:var(--cream);}
+  .ig-sub{font-size:0.82rem;color:var(--muted);}
+  .about-media{position:relative;border-radius:var(--radius);overflow:hidden;min-height:280px;}
+  .about-media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+  .exp-badge{
+    position:absolute;bottom:16px;left:16px;z-index:2;
+    background:rgba(21,12,7,0.85);backdrop-filter:blur(6px);
+    padding:16px 20px;border-radius:10px;border:1px solid var(--line);
+  }
+  .exp-num{font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);font-size:1.6rem;}
+  .exp-label{font-size:0.78rem;color:var(--cream-dim);}
+  @media(min-width:860px){
+    .about{grid-template-columns:1fr 1fr;align-items:center;}
+  }
+
+  /* ===== CONTACT ===== */
+  .contact{max-width:760px;margin:120px auto 0;padding:0 20px;text-align:center;}
+  .contact h2{font-size:clamp(2rem,6vw,2.7rem);margin-bottom:36px;}
+  .contact-cards{display:grid;grid-template-columns:1fr;gap:16px;text-align:left;}
+  @media(min-width:640px){.contact-cards{grid-template-columns:1fr 1fr;}}
+  .contact-card{
+    display:flex;align-items:center;gap:16px;
+    background:var(--bg-1);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px 22px;
+    transition:border-color .2s ease;
+  }
+  .contact-card:hover{border-color:var(--gold);}
+  .contact-icon{
+    width:38px;height:38px;border-radius:50%;background:var(--bg-2);
+    display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;
+  }
+  .contact-label{font-size:0.78rem;color:var(--muted);}
+  .contact-value{font-weight:500;color:var(--cream);}
+
+  /* ===== FOOTER ===== */
+  footer{margin-top:110px;padding:44px 20px 34px;border-top:1px solid var(--line);text-align:center;}
+  .footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;}
+  .footer-copy{font-size:0.82rem;color:var(--muted);margin-bottom:14px;}
+  .footer-links{display:flex;justify-content:center;gap:20px;font-size:0.85rem;color:var(--cream-dim);}
+  .footer-links a:hover{color:var(--gold-bright);}
+
+  /* reveal-on-scroll */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+
+  :focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand">
+    <div class="brand-mark">T</div>
+    <div class="brand-text">
+      <div class="brand-name">Kopi Talang</div>
+      <div class="brand-sub">UMKM KOPI TANGGAMUS</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#katalog">Katalog</a>
+    <a href="#tentang">Tentang</a>
+    <a href="#kontak">Kontak</a>
+  </div>
+  <div class="nav-right">
+    <button class="cart-icon-btn" id="cartIconBtn" aria-label="Buka keranjang belanja">
+      🛒<span class="cart-count zero" id="cartCount">0</span>
+    </button>
+    <a href="#katalog" class="nav-cta">Lihat Katalog</a>
+  </div>
+</nav>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Keranjang belanja">
+  <div class="cart-head">
+    <h3>Keranjang Anda</h3>
+    <button class="cart-close" id="cartCloseBtn" aria-label="Tutup keranjang">✕</button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer">
+    <div class="cart-empty">Keranjang Anda masih kosong.<br>Yuk, pilih kopi favoritmu ☕</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-value">Rp<span id="cartTotalValue">0</span></span>
+    </div>
+    <a href="#" target="_blank" class="cart-checkout-btn" id="cartCheckoutBtn" disabled>🛍 Checkout via WhatsApp ↗</a>
+  </div>
+</aside>
+
+<section class="hero">
+  <span class="eyebrow hero-eyebrow">✦ KOPI ROBUSTA TANGGAMUS ✦</span>
+  <h1>Dari Lereng Talang<br><span class="italic-gold">ke Cangkir</span><br>Anda</h1>
+  <p>Kopi pilihan terbaik dari dataran tinggi Tanggamus, Lampung — dipetik, diproses, dan dihadirkan langsung dari petani lokal ke tangan Anda.</p>
+  <a href="#katalog" class="btn-primary">🛍 Lihat Katalog Produk</a>
+  <div class="scroll-hint">SCROLL<br>⌄</div>
+</section>
+
+<div class="stats reveal">
+  <div class="stat"><div class="stat-num">4+</div><div class="stat-label">Varian Produk</div></div>
+  <div class="stat"><div class="stat-num">3.800+</div><div class="stat-label">Pelanggan Puas</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Kopi Lokal</div></div>
+  <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Rating Toko</div></div>
+</div>
+
+<section class="catalog" id="katalog">
+  <div class="section-head reveal">
+    <span class="eyebrow">KOLEKSI KAMI</span>
+    <h2>Katalog Produk</h2>
+    <p>Setiap produk tersedia dalam pilihan kemasan 200g, 500g, dan 1kg dengan garansi kesegaran, hasil panen langsung dari kebun Tanggamus. Tersedia di TikTok Shop.</p>
+  </div>
+
+  <div class="filters reveal">
+    <button class="filter-btn active" data-filter="semua">Semua Produk</button>
+    <button class="filter-btn" data-filter="biji">Kopi Biji</button>
+    <button class="filter-btn" data-filter="halus">Giling Halus</button>
+    <button class="filter-btn" data-filter="kasar">Giling Kasar</button>
+    <button class="filter-btn" data-filter="sedang">Giling Sedang</button>
+  </div>
+
+  <div class="product-grid" id="productGrid">
+
+    <article class="product-card reveal" data-category="biji">
+      <div class="card-media">
+        <img src="Biji.jpg" alt="Kopi Biji Pilihan dari dataran tinggi, Tanggamus">
+        <span class="badge">Terlaris</span>
+        <span class="location">📍 Talang Jawa , Pulau Panggung, Tanggamus</span>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Whole Bean Premium</span>
+        <h3>Kopi Biji Pilihan</h3>
+        <p class="card-desc">Biji kopi utuh yang dipetik secara selektif dari perkebunan dataran tinggi Tanggamus. Aroma kuat, rasa penuh, dan kesegaran terjaga sempurna.</p>
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Gilingan</div><div class="spec-value">Biji Utuh</div></div>
+          <div class="spec"><div class="spec-label">Roast</div><div class="spec-value spec-roast">Medium-Dark</div></div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Kemasan</div>
+          <div class="variant-options">
+            <button class="variant-btn active" data-weight="200g" data-price="30.000">200g<span>Rp30.000</span></button>
+            <button class="variant-btn" data-weight="500g" data-price="70.000">500g<span>Rp70.000</span></button>
+            <button class="variant-btn" data-weight="1kg" data-price="140.000">1kg<span>Rp140.000</span></button>
+          </div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Tingkat Roasting</div>
+          <div class="variant-options roast-options">
+            <button class="roast-btn active" data-roast="Medium-Dark">Medium-Dark</button>
+            <button class="roast-btn" data-roast="Dark">Dark</button>
+          </div>
+        </div>
+        <div class="price-row"><div class="price-tag">Rp<span class="price-value">30.000</span><small>/ kemasan</small></div></div>
+        <div class="meta-row">
+          <div class="rating">★★★★★<span>4.9</span></div>
+          <div class="sold">1.240+ terjual</div>
+        </div>
+        <div class="card-actions">
+          <button class="shop-btn add-cart-btn">🛒 Tambah ke Keranjang</button>
+          <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20Kopi%20Biji%20Pilihan%20dari%20Kopi%20Talang" target="_blank" class="shop-btn shop-WhatsApp">🛍 WhatsApp ↗</a>
+          <a href="https://www.tiktok.com/@pkpm47.talangjawa1?_r=1&_t=ZS-98lWWIsu6lj" class="shop-btn shop-tiktok">♪ TikTok ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card reveal" data-category="halus">
+      <div class="card-media">
+        <img src="Halus.jpeg" alt="Kopi Giling Halus dari dataran tinggi, Tanggamus">
+        <span class="badge">Baru</span>
+        <span class="location">📍 Talang Jawa , Pulau Panggung, Tanggamus</span>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Fine Ground Espresso</span>
+        <h3>Kopi Giling Halus</h3>
+        <p class="card-desc">Digiling halus khusus untuk espresso machine dan moka pot. Menghasilkan ekstraksi sempurna, rasa pekat, dan crema tebal yang memanjakan.</p>
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Gilingan</div><div class="spec-value">Extra Fine</div></div>
+          <div class="spec"><div class="spec-label">Roast</div><div class="spec-value spec-roast">Dark</div></div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Kemasan</div>
+          <div class="variant-options">
+            <button class="variant-btn active" data-weight="200g" data-price="30.000">200g<span>Rp30.000</span></button>
+            <button class="variant-btn" data-weight="500g" data-price="70.000">500g<span>Rp70.000</span></button>
+            <button class="variant-btn" data-weight="1kg" data-price="140.000">1kg<span>Rp140.000</span></button>
+          </div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Tingkat Roasting</div>
+          <div class="variant-options roast-options">
+            <button class="roast-btn" data-roast="Medium-Dark">Medium-Dark</button>
+            <button class="roast-btn active" data-roast="Dark">Dark</button>
+          </div>
+        </div>
+        <div class="price-row"><div class="price-tag">Rp<span class="price-value">30.000</span><small>/ kemasan</small></div></div>
+        <div class="meta-row">
+          <div class="rating">★★★★★<span>4.8</span></div>
+          <div class="sold">890+ terjual</div>
+        </div>
+        <div class="card-actions">
+          <button class="shop-btn add-cart-btn">🛒 Tambah ke Keranjang</button>
+          <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20Kopi%20Giling%20Halus%20dari%20Kopi%20Talang" target="_blank" class="shop-btn shop-WhatsApp">🛍 WhatsApp ↗</a>
+          <a href="https://www.tiktok.com/@pkpm47.talangjawa1?_r=1&_t=ZS-98lWWIsu6lj" class="shop-btn shop-tiktok">♪ TikTok ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card reveal" data-category="kasar">
+      <div class="card-media">
+        <img src="Sedang.jpeg" alt="Kopi Giling Kasar dari dataran tinggi, Lampung">
+        <span class="badge">Terlaris</span>
+        <span class="location">📍 Talang Jawa , Pulau Panggung, Tanggamus</span>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Coarse Ground Brew</span>
+        <h3>Kopi Giling Kasar</h3>
+        <p class="card-desc">Gilingan kasar yang tepat untuk French press dan cold brew. Menghasilkan rasa clean, body medium, dan nuansa buah yang kompleks.</p>
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Gilingan</div><div class="spec-value">Coarse</div></div>
+          <div class="spec"><div class="spec-label">Roast</div><div class="spec-value spec-roast">Medium-Dark</div></div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Kemasan</div>
+          <div class="variant-options">
+            <button class="variant-btn active" data-weight="200g" data-price="30.000">200g<span>Rp30.000</span></button>
+            <button class="variant-btn" data-weight="500g" data-price="70.000">500g<span>Rp70.000</span></button>
+            <button class="variant-btn" data-weight="1kg" data-price="140.000">1kg<span>Rp140.000</span></button>
+          </div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Tingkat Roasting</div>
+          <div class="variant-options roast-options">
+            <button class="roast-btn active" data-roast="Medium-Dark">Medium-Dark</button>
+            <button class="roast-btn" data-roast="Dark">Dark</button>
+          </div>
+        </div>
+        <div class="price-row"><div class="price-tag">Rp<span class="price-value">30.000</span><small>/ kemasan</small></div></div>
+        <div class="meta-row">
+          <div class="rating">★★★★★<span>4.7</span></div>
+          <div class="sold">672+ terjual</div>
+        </div>
+        <div class="card-actions">
+          <button class="shop-btn add-cart-btn">🛒 Tambah ke Keranjang</button>
+          <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20Kopi%20Giling%20Kasar%20dari%20Kopi%20Talang" target="_blank" class="shop-btn shop-WhatsApp">🛍 WhatsApp ↗</a>
+          <a href="https://www.tiktok.com/@pkpm47.talangjawa1?_r=1&_t=ZS-98lWWIsu6lj
+          " class="shop-btn shop-tiktok">♪ TikTok ↗</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="product-card reveal" data-category="sedang">
+      <div class="card-media">
+        <img src="Kasar.jpeg" alt="Kopi Giling Sedang dari dataran tinggi, Tanggamus">
+        <span class="badge">Favorit</span>
+        <span class="location">📍 Talang Jawa , Pulau Panggung, Tanggamus</span>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Medium Ground All-Purpose</span>
+        <h3>Kopi Giling Sedang</h3>
+        <p class="card-desc">Gilingan serba guna untuk drip coffee, pour-over, dan aeropress. Keseimbangan sempurna antara ekstraksi dan kejernihan rasa.</p>
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Gilingan</div><div class="spec-value">Medium</div></div>
+          <div class="spec"><div class="spec-label">Roast</div><div class="spec-value spec-roast">Medium-Dark</div></div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Kemasan</div>
+          <div class="variant-options">
+            <button class="variant-btn active" data-weight="200g" data-price="30.000">200g<span>Rp30.000</span></button>
+            <button class="variant-btn" data-weight="500g" data-price="70.000">500g<span>Rp70.000</span></button>
+            <button class="variant-btn" data-weight="1kg" data-price="140.000">1kg<span>Rp140.000</span></button>
+          </div>
+        </div>
+        <div class="variants">
+          <div class="variant-label">Pilih Tingkat Roasting</div>
+          <div class="variant-options roast-options">
+            <button class="roast-btn active" data-roast="Medium-Dark">Medium-Dark</button>
+            <button class="roast-btn" data-roast="Dark">Dark</button>
+          </div>
+        </div>
+        <div class="price-row"><div class="price-tag">Rp<span class="price-value">30.000</span><small>/ kemasan</small></div></div>
+        <div class="meta-row">
+          <div class="rating">★★★★★<span>4.8</span></div>
+          <div class="sold">1.050+ terjual</div>
+        </div>
+        <div class="card-actions">
+          <button class="shop-btn add-cart-btn">🛒 Tambah ke Keranjang</button>
+          <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20tertarik%20dengan%20Kopi%20Giling%20Sedang%20dari%20Kopi%20Talang" target="_blank" class="shop-btn shop-WhatsApp">🛍 WhatsApp ↗</a>
+          <a href="https://www.tiktok.com/@pkpm47.talangjawa1?_r=1&_t=ZS-98lWWIsu6lj" class="shop-btn shop-tiktok">♪ TikTok ↗</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="cta-inner reveal">
+    <span class="eyebrow">DAPATKAN SEKARANG</span>
+    <h2>Belanja Lebih Mudah di</h2>
+    <p>Kunjungi toko resmi kami dan nikmati kemudahan belanja dengan pengiriman ke seluruh Indonesia.</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20bertanya%20tentang%20produk%20Kopi%20Talang" target="_blank" class="shop-btn shop-WhatsApp">🛍 WhatsApp ↗</a>
+      <a href="https://instagram.com/kopitalang.id" target="_blank" class="shop-btn shop-instagram">📷 Instagram ↗</a>
+      <a href="https://www.tiktok.com/@pkpm47.talangjawa1?_r=1&_t=ZS-98lWWIsu6lj" class="shop-btn shop-tiktok">♪ TikTok  ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="tentang">
+  <div class="reveal">
+    <span class="eyebrow">TENTANG KAMI</span>
+    <h2>Kopi Lokal,<br><span class="italic-gold">Rasa Tanggamus</span></h2>
+    <p>Kopi Talang adalah usaha kecil yang lahir dari kecintaan terhadap kopi robusta dataran tinggi Tanggamus, Lampung. Kami bekerja langsung dengan petani kopi di lereng Gunung Tanggamus untuk menghadirkan biji kopi terbaik.</p>
+    <p>Setiap batch diproses dengan standar ketat, dikemas segar, dan dikirim langsung ke pintu Anda — tanpa perantara, tanpa kompromi.</p>
+    <div class="ig-tag">
+      <div class="ig-icon">📷</div>
+      <div>
+        <div class="ig-handle">@kopitalang.id</div>
+        <div class="ig-sub">Ikuti kami di Instagram</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-media reveal">
+    <img src="https://images.unsplash.com/photo-1524350876685-274059332603?q=80&w=1200&auto=format&fit=crop" alt="Biji kopi Talang Tanggamus">
+    <div class="exp-badge">
+      <div class="exp-num">5+</div>
+      <div class="exp-label">Tahun Pengalaman</div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="kontak">
+  <h2 class="reveal">Hubungi Kami</h2>
+  <div class="contact-cards reveal">
+    <div class="contact-card">
+      <div class="contact-icon">📞</div>
+      <div>
+        <div class="contact-label">WhatsApp</div>
+        <div class="contact-value">+62 812-3456-7890</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">📍</div>
+      <div>
+        <div class="contact-label">Lokasi</div>
+        <div class="contact-value">Tanggamus, Lampung</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <div class="brand-mark">T</div>
+    <div class="brand-name">Kopi Talang</div>
+  </div>
+  <div class="footer-copy">© 2024 Kopi Talang UMKM · Semua Hak Dilindungi</div>
+  <div class="footer-links">
+    <a href="https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20bertanya%20tentang%20produk%20Kopi%20Talang" target="_blank">WhatsApp</a>
+    <a href="#">TikTok Shop</a>
+  </div>
+</footer>
+
+<script>
+  // Filter logic
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.product-card');
+  filterBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card=>{
+        if(filter==='semua' || card.dataset.category===filter){
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Variant (kemasan) + roast selection logic
+  document.querySelectorAll('.product-card').forEach(card=>{
+    const variantBtns = card.querySelectorAll('.variant-btn');
+    const roastBtns = card.querySelectorAll('.roast-btn');
+    const priceValue = card.querySelector('.price-value');
+    const specRoast = card.querySelector('.spec-roast');
+    const waLink = card.querySelector('.shop-WhatsApp');
+    const productName = card.querySelector('h3') ? card.querySelector('h3').textContent : '';
+
+    function currentRoast(){
+      const activeRoast = card.querySelector('.roast-btn.active');
+      return activeRoast ? activeRoast.dataset.roast : '';
+    }
+
+    function updateWA(weight, price){
+      if(!waLink) return;
+      const phoneMatch = waLink.getAttribute('href').match(/wa\.me\/(\d+)/);
+      const phone = phoneMatch ? phoneMatch[1] : '6281234567890';
+      const roast = currentRoast();
+      const msg = `Halo, saya tertarik dengan ${productName} (Roast ${roast}) kemasan ${weight} (Rp${price}) dari Kopi Talang`;
+      waLink.setAttribute('href', `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
+    }
+
+    variantBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        variantBtns.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const weight = btn.dataset.weight;
+        const price = btn.dataset.price;
+        if(priceValue) priceValue.textContent = price;
+        updateWA(weight, price);
+      });
+    });
+
+    roastBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        roastBtns.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        if(specRoast) specRoast.textContent = btn.dataset.roast;
+        const activeVariant = card.querySelector('.variant-btn.active');
+        if(activeVariant) updateWA(activeVariant.dataset.weight, activeVariant.dataset.price);
+      });
+    });
+
+    const activeBtn = card.querySelector('.variant-btn.active');
+    if(activeBtn) updateWA(activeBtn.dataset.weight, activeBtn.dataset.price);
+  });
+
+  // ===== KERANJANG BELANJA =====
+  const CART_STORAGE_KEY = 'kopitalang_cart';
+  let cart = [];
+  try{
+    const saved = localStorage.getItem(CART_STORAGE_KEY);
+    if(saved) cart = JSON.parse(saved);
+  }catch(e){ cart = []; }
+
+  const cartIconBtn = document.getElementById('cartIconBtn');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartCloseBtn = document.getElementById('cartCloseBtn');
+  const cartItemsContainer = document.getElementById('cartItemsContainer');
+  const cartCount = document.getElementById('cartCount');
+  const cartTotalValue = document.getElementById('cartTotalValue');
+  const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
+
+  function parseRupiah(str){
+    return parseInt(String(str).replace(/\./g,''), 10) || 0;
+  }
+  function formatRupiah(num){
+    return num.toLocaleString('id-ID');
+  }
+  function saveCart(){
+    try{ localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); }catch(e){}
+  }
+
+  function openCart(){
+    cartOverlay.classList.add('open');
+    cartDrawer.classList.add('open');
+  }
+  function closeCart(){
+    cartOverlay.classList.remove('open');
+    cartDrawer.classList.remove('open');
+  }
+  cartIconBtn.addEventListener('click', openCart);
+  cartCloseBtn.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+
+  function addToCart(item){
+    const existing = cart.find(i => i.name===item.name && i.weight===item.weight && i.roast===item.roast);
+    if(existing){
+      existing.qty += 1;
+    } else {
+      cart.push({...item, qty:1});
+    }
+    saveCart();
+    renderCart();
+  }
+
+  function changeQty(index, delta){
+    if(!cart[index]) return;
+    cart[index].qty += delta;
+    if(cart[index].qty <= 0){
+      cart.splice(index,1);
+    }
+    saveCart();
+    renderCart();
+  }
+
+  function removeItem(index){
+    cart.splice(index,1);
+    saveCart();
+    renderCart();
+  }
+
+  function renderCart(){
+    const totalQty = cart.reduce((sum,i)=>sum+i.qty,0);
+    cartCount.textContent = totalQty;
+    cartCount.classList.toggle('zero', totalQty===0);
+
+    if(cart.length===0){
+      cartItemsContainer.innerHTML = '<div class="cart-empty">Keranjang Anda masih kosong.<br>Yuk, pilih kopi favoritmu ☕</div>';
+      cartTotalValue.textContent = '0';
+      cartCheckoutBtn.setAttribute('disabled','disabled');
+      cartCheckoutBtn.removeAttribute('href');
+      return;
+    }
+
+    let total = 0;
+    let html = '';
+    cart.forEach((item, idx)=>{
+      const lineTotal = item.priceNum * item.qty;
+      total += lineTotal;
+      html += `
+        <div class="cart-item">
+          <div class="cart-item-thumb"><img src="${item.img}" alt="${item.name}"></div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-meta">${item.weight} · Roast ${item.roast}</div>
+            <div class="cart-item-bottom">
+              <div class="cart-qty">
+                <button data-action="dec" data-idx="${idx}" aria-label="Kurangi">−</button>
+                <span>${item.qty}</span>
+                <button data-action="inc" data-idx="${idx}" aria-label="Tambah">+</button>
+              </div>
+              <div class="cart-item-price">Rp${formatRupiah(lineTotal)}</div>
+            </div>
+            <a href="#" class="cart-item-remove" data-action="remove" data-idx="${idx}">Hapus</a>
+          </div>
+        </div>`;
+    });
+    cartItemsContainer.innerHTML = html;
+    cartTotalValue.textContent = formatRupiah(total);
+    cartCheckoutBtn.removeAttribute('disabled');
+
+    const phone = '6281234567890';
+    let msgLines = ['Halo, saya ingin memesan:'];
+    cart.forEach(item=>{
+      msgLines.push(`- ${item.name} (${item.weight}, Roast ${item.roast}) x${item.qty} = Rp${formatRupiah(item.priceNum*item.qty)}`);
+    });
+    msgLines.push(`Total: Rp${formatRupiah(total)}`);
+    msgLines.push('Mohon info ketersediaan dan cara pembayarannya. Terima kasih!');
+    cartCheckoutBtn.setAttribute('href', `https://wa.me/${phone}?text=${encodeURIComponent(msgLines.join('\n'))}`);
+
+    cartItemsContainer.querySelectorAll('[data-action="inc"]').forEach(b=>{
+      b.addEventListener('click', ()=>changeQty(parseInt(b.dataset.idx,10), 1));
+    });
+    cartItemsContainer.querySelectorAll('[data-action="dec"]').forEach(b=>{
+      b.addEventListener('click', ()=>changeQty(parseInt(b.dataset.idx,10), -1));
+    });
+    cartItemsContainer.querySelectorAll('[data-action="remove"]').forEach(b=>{
+      b.addEventListener('click', (e)=>{ e.preventDefault(); removeItem(parseInt(b.dataset.idx,10)); });
+    });
+  }
+
+  document.querySelectorAll('.add-cart-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const card = btn.closest('.product-card');
+      const name = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Produk';
+      const img = card.querySelector('.card-media img') ? card.querySelector('.card-media img').getAttribute('src') : '';
+      const activeVariant = card.querySelector('.variant-btn.active');
+      const activeRoast = card.querySelector('.roast-btn.active');
+      const weight = activeVariant ? activeVariant.dataset.weight : '';
+      const priceNum = activeVariant ? parseRupiah(activeVariant.dataset.price) : 0;
+      const roast = activeRoast ? activeRoast.dataset.roast : '';
+
+      addToCart({ name, img, weight, priceNum, roast });
+      openCart();
+
+      btn.classList.add('added');
+      const originalText = btn.textContent;
+      btn.textContent = '✓ Ditambahkan';
+      setTimeout(()=>{ btn.classList.remove('added'); btn.textContent = originalText; }, 1200);
+    });
+  });
+
+  renderCart();
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
